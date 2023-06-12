@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class TeacherController extends Controller
@@ -138,5 +140,69 @@ class TeacherController extends Controller
         $department = User::find($id);
         $department->delete();
         return redirect('/admin/teachers')->with('status', 'Successfully deleted!');
+    }
+
+    public function profile()
+    {
+        // $teacher = User::where('role_as', 2)->count('id');
+        return view('teacher.profile');
+    }
+
+    public function update_profile(Request $request, $id)
+    {
+        // Validate the input
+        $validatedData = $request->validate([
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required'],
+            'email' => ['required'],
+            // Add more validation rules for other fields as needed
+        ]);
+
+        if ($request->has('file')) {
+            // PPT Upload
+
+            $file = $request->file('file');
+            $ext = $file->getClientOriginalExtension();
+            $lesson = $file->getClientOriginalName();
+            $name =  $lesson;
+            $path = public_path('\file\profile');
+            $file->move($path, $name);
+
+            // Remove duplicate file
+            if (File::exists($file)) {
+                File::delete($file);
+            }
+
+            $data = User::find($id);
+
+            // Update the fields
+            $data->firstname = $request->input('firstname');
+            $data->lastname = $request->input('lastname');
+            $data->email = $request->input('email');
+            $data->phone = $request->input('phone');
+            $data->bio = trim($request->input('bio'));
+            $data->avatar = $name;
+            $data->password = Auth::user()->password;
+
+            // Save the updated data
+            $data->save();
+
+            return redirect()->back()->with('status', 'Profile update successfully.');
+        } else {
+            $data = User::find($id);
+            $bioTrim = $request->input('bio');
+            // Update the fields
+            $data->firstname = $request->input('firstname');
+            $data->lastname = $request->input('lastname');
+            $data->email = $request->input('email');
+            $data->phone = $request->input('phone');
+            $data->bio = trim($bioTrim);
+            $data->password = Auth::user()->password;
+
+            // Save the updated data
+            $data->save();
+
+            return redirect()->back()->with('status', 'Profile update successfully.');
+        }
     }
 }

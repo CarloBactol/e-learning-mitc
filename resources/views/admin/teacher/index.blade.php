@@ -26,7 +26,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div
                         class="bg-gradient-secondary shadow-secondary border-radius-lg pt-4 pb-3 d-flex justify-content-between">
-                        <h6 class="text-white text-capitalize ps-3">Student Records</h6>
+                        <h6 class="text-white text-capitalize ps-3">Teacher Records</h6>
                         <a title="Add New" href="{{ route('admin.teachers.create') }}"><i class="fas fa-plus"
                                 style="color: #fff; font-size: 20px; font-weight: bold; margin-right: 20px;"></i></a>
 

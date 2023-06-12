@@ -10,7 +10,9 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DashStudentController;
 use App\Http\Controllers\DashTeacherController;
+use App\Http\Controllers\ForgetPasswordManager;
 use App\Http\Controllers\Admin\SectionController;
+use App\Http\Controllers\Teacher\StudentSubmitted;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/forget-password', [ForgetPasswordManager::class, 'forgetpassword'])->name('forget.password');
+Route::post('/forget-password', [ForgetPasswordManager::class, 'forgetpasswordPost'])->name('forget.password.post');
+Route::post('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPassword'])->name('reset.password');
+
 Route::group(['middleware' => 'auth'], function () {
 
 
@@ -34,6 +40,8 @@ Route::group(['middleware' => 'auth'], function () {
     // admin only
     Route::group(['middleware' => 'isAdmin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
+        Route::get('profile', [\App\Http\Controllers\Admin\DashboardController::class, 'profile'])->name('profile');
+        Route::post('update/{id}', [\App\Http\Controllers\Admin\DashboardController::class, 'update'])->name('update');
         Route::resource('permissions', \App\Http\Controllers\Admin\PermissionController::class);
         Route::delete('permissions_mass_destroy', [\App\Http\Controllers\Admin\PermissionController::class, 'massDestroy'])->name('permissions.mass_destroy');
         Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
@@ -72,6 +80,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('dashstudents', DashStudentController::class);
         // Route::resource('tests', TestController::class);
 
+        Route::get('profile', [StudentController::class, 'profile'])->name('profile');
+        Route::post('update/{id}', [StudentController::class, 'update_profile'])->name('update_profile');
+
         // tests
         Route::get('test', [\App\Http\Controllers\TestController::class, 'index'])->name('students.test');
         Route::get('test/{id}', [\App\Http\Controllers\TestController::class, 'test'])->name('students.show');
@@ -81,12 +92,18 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Lesson
         Route::resource('student_lessons', \App\Http\Controllers\StudentLesson::class);
+
+        //Assignment
+        Route::resource('student_assignments', \App\Http\Controllers\StudentAssignment::class);
     });
 
     // });
     //Teacher
     Route::group(['middleware' => 'isTeacher', 'prefix' => 'teacher', 'as' => 'teacher.'],  function () {
         Route::resource('dashteachers', DashTeacherController::class);
+
+        Route::get('profile', [TeacherController::class, 'profile'])->name('profile');
+        Route::post('update/{id}', [TeacherController::class, 'update_profile'])->name('update_profile');
 
         // categories
         Route::resource('teacher_categories', \App\Http\Controllers\Teacher\TeacherCategory::class);
@@ -102,6 +119,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Lesson
         Route::resource('teacher_lessons', \App\Http\Controllers\Teacher\TeacherLesson::class);
+
+        //Assignmnet
+        Route::resource('teacher_assignments', \App\Http\Controllers\Teacher\TeacherAssignment::class);
+        Route::get('/student_submitted', [StudentSubmitted::class, 'student_submitted'])->name('student_submitted');
     });
 });
 

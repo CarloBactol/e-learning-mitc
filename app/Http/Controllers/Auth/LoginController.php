@@ -30,12 +30,16 @@ class LoginController extends Controller
     // protected $redirectTo = RouteServiceProvider::HOME;
     protected function Authenticated()
     {
-        if (Auth::user()->role_as == '1') { // 1 - admin login
-            return redirect('admin/dashboard')->with('success', 'Welcome back Admin');
-        } elseif (Auth::user()->role_as == '0') { // 0 - normal cashier
-            return redirect('/dashstudents')->with('success', 'Welecome back Cashier');
-        } elseif (Auth::user()->role_as == '2') { // 0 - normal cashier
-            return redirect('/teacher/dashteachers')->with('success', 'Welecome back Cashier');
+        if (Auth::check()) {
+            if (Auth::user()->role_as == '1') { // 1 - admin login
+                return redirect('admin/dashboard')->with('success', 'Welcome back Admin');
+            } elseif (Auth::user()->role_as == '0') { // 0 - normal cashier
+                return redirect('/dashstudents')->with('success', 'Welecome back Cashier');
+            } elseif (Auth::user()->role_as == '2') { // 0 - normal cashier
+                return redirect('/teacher/dashteachers')->with('success', 'Welecome back Cashier');
+            } else {
+                return abort(404);
+            }
         }
     }
 
@@ -48,4 +52,7 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    protected $maxAttempts = 3;
+    protected $decayMinutes = 1;
 }

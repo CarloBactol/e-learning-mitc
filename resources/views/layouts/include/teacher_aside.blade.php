@@ -94,6 +94,47 @@
                 </a>
             </li>
 
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Assignment</h6>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white " href="{{ route('teacher.teacher_assignments.index') }}">
+
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">book</i>
+                    </div>
+
+                    <span class="nav-link-text ms-1">Assignments</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white " href="{{ route('teacher.student_submitted') }}">
+
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">person_add</i>
+                    </div>
+
+                    <span class="nav-link-text ms-1">Student Submitted</span>
+                </a>
+            </li>
+
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Profile</h6>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white " href="{{ route('teacher.profile') }}">
+
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">person</i>
+                    </div>
+
+                    <span class="nav-link-text ms-1">Profile</span>
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link text-white " href=" {{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
