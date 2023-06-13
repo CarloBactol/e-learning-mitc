@@ -136,6 +136,13 @@
                                             </textarea>
                                         <small id="bioErr" class="text-danger"></small>
                                     </div>
+                                    <div class="form-group mb-2">
+                                        @if (Route::has('password.request'))
+                                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                                            {{ __('Forgot Your Password?') }}
+                                        </a>
+                                        @endif
+                                    </div>
 
                                 </div>
 

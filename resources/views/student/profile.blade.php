@@ -127,9 +127,11 @@
                                     </div>
                                     <div class="form-group mb-2">
 
-                                        <a class="btn btn-link" href="{{ route('forget.password') }}">
-                                            {{('Forgot Your Password?') }}
+                                        @if (Route::has('password.request'))
+                                        <a class="btn btn-link" href="{{ route('password.request') }}">
+                                            {{ __('Forgot Your Password?') }}
                                         </a>
+                                        @endif
                                     </div>
 
                                 </div>
